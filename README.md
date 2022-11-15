@@ -1,4 +1,4 @@
-The repository contains the code for a dog review web application. The backend of the application is written by Ballerina Azure functions. The webapp is created by ReactJS and Tailwind CSS. The objective of the demo is to demonstrate a practical use case written Ballerina Azure functions. 
+The repository contains the code for a dog review web application. The backend of the application is written by Ballerina Azure functions. The webapp is created by ReactJS and Tailwind CSS. The objective of the demo is to demonstrate a practical use case written Ballerina Azure functions.
 
 ### Supported Triggers and Bindings
 
@@ -9,13 +9,15 @@ The sample covers following azure functions triggers and bindings. The goal is t
 - Output Bindings - Blob, HTTP, CosmosDB
 
 
-### Other Branches 
+### Other Branches
 - [2201.3.x](https://github.com/ballerina-guides/azure-functions-demo/tree/2201.3.x) - (Unreleased) - Multiple Output bindings, Native build
 - [node](https://github.com/ballerina-guides/azure-functions-demo/tree/node) - (Not implemented) - NodeJS azure functions implementation of the same use case
 
 ### Prerequisites
 
 - [Ballerina - 2201.2.x +](https://ballerina.io/downloads/)
+
+- [Docker](https://docs.docker.com/get-docker/)
 
 - [Azure Functions core tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local)
 
@@ -36,11 +38,11 @@ The sample covers following azure functions triggers and bindings. The goal is t
 
 - Publish — Code
 
-- Runtime Stack — Java
+- Runtime Stack — Custom Handler
 
-- Version — 11
+- Version — Custom
 
-- Operating System — Windows
+- Operating System — Linux
 
 - In the Review & Create screen, make note of the storage account name.
 
@@ -69,11 +71,11 @@ The sample covers following azure functions triggers and bindings. The goal is t
 
 ### Building and Deployment
 
-Ballerina generates all the required artifacts required for deploying in Azure functions. All you have to do is to execute `bal build` in the ballerina package directory and execute publish command shown in the build output to deploy the function app.
+Ballerina generates all the required artifacts required for deploying in Azure functions. All you have to do is to execute `bal build --native` in the ballerina package directory and execute publish command shown in the build output to deploy the function app. When the `--native` flag is present, ballerina will generate a native executable using the GraalVM. There will be two compilations to build an executable which is compatible with local setup and azure functions remote platform. This compilation process will take time.
 
 ```bash
 cd <repo_dir>/azf_demo
-bal build
+bal build --native
 func azure functionapp publish <function_app_name> --script-root target/azure_functions
 ```
 
@@ -117,7 +119,7 @@ Now the functions are all ready. You can invoke these functions manually, but to
 
 ----------
 
-Next, you can simply start the function by executing `npm start` in the `web_app` directory. 
+Next, you can simply start the function by executing `npm start` in the `web_app` directory.
 
 ```bash
 cd <repo_dir>/web_app

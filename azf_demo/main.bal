@@ -23,31 +23,23 @@ configurable string subscriptionKey = ?;
 configurable string storeAccountName = ?;
 
 service /reviews on new af:HttpListener() {
-    resource function post upload(@http:Payload byte[]|error image, string name) returns @af:BlobOutput {path: "images/{Query.name}"} byte[]|error {
-        return image;
-    }
-}
-
-@af:BlobTrigger {
-    path: "images/{name}"
-}
-listener af:BlobListener blobListener = new af:BlobListener();
-
-service "on-image" on blobListener {
-    remote function onUpdated(byte[] image, @af:BindingName string name) returns @af:CosmosDBOutput {
+    resource function post upload(@http:Payload byte[] image, string name) returns [@af:BlobOutput {path: "images/{Query.name}"} byte[], @af:CosmosDBOutput {
         connectionStringSetting: "CosmosDBConnection",
         databaseName: "reviewdb",
         collectionName: "c1"
-    } Entry|error {
+    } Entry]|error {
 
         var [isDog, description] = check getImageInsights(image);
 
-        return {
-            id: uuid:createType1AsString(),
-            imageUrl: "https://" + storeAccountName + ".blob.core.windows.net/images/" + name,
-            isDog: isDog,
-            description: description
-        };
+        return [
+            image,
+            {
+                id: uuid:createType1AsString(),
+                imageUrl: "https://" + storeAccountName + ".blob.core.windows.net/images/" + name,
+                isDog: isDog,
+                description: description
+            }
+        ];
     }
 }
 
@@ -80,11 +72,11 @@ function getImageInsights(byte[] image) returns [boolean, string]|error {
 
 service /dashboard on new af:HttpListener() {
     resource function get .(@af:CosmosDBInput {
-                                connectionStringSetting: "CosmosDBConnection",
-                                databaseName: "reviewdb",
-                                collectionName: "c1",
-                                sqlQuery: "SELECT * FROM Items"
-                            } Entry[] entries) returns @af:HttpOutput Entry[]|error {
+                connectionStringSetting: "CosmosDBConnection",
+                databaseName: "reviewdb",
+                collectionName: "c1",
+                sqlQuery: "SELECT * FROM Items"
+            } Entry[] entries) returns @af:HttpOutput Entry[]|error {
         return entries;
     }
 }
