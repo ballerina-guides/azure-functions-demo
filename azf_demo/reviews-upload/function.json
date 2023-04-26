@@ -1,0 +1,37 @@
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get",
+        "post"
+      ],
+      "route": "reviews/upload"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "type": "blob",
+      "direction": "out",
+      "name": "outResp",
+      "path": "images/{Query.name}",
+      "connection": "AzureWebJobsStorage",
+      "dataType": "string"
+    },
+    {
+      "type": "cosmosDB",
+      "connectionStringSetting": "CosmosDBConnection",
+      "databaseName": "reviewdb",
+      "collectionName": "c1",
+      "direction": "out",
+      "name": "outResp1"
+    }
+  ],
+  "scriptFile": "../dist/reviews-upload/index.js"
+}
