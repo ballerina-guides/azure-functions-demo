@@ -16,6 +16,7 @@
 
 import ballerinax/azure_functions as af;
 import ballerina/http;
+import ballerina/mime;
 import ballerina/uuid;
 
 configurable string visionApp = ?;
@@ -23,16 +24,17 @@ configurable string subscriptionKey = ?;
 configurable string storeAccountName = ?;
 
 service /reviews on new af:HttpListener() {
-    resource function post upload(@http:Payload byte[] image, string name) returns [@af:BlobOutput {path: "images/{Query.name}"} byte[], @af:CosmosDBOutput {
+    resource function post upload(@http:Payload mime:Entity image, string name) returns [@af:BlobOutput {path: "images/{Query.name}"} byte[], @af:CosmosDBOutput {
         connectionStringSetting: "CosmosDBConnection",
         databaseName: "reviewdb",
         collectionName: "c1"
     } Entry]|error {
 
-        var [isDog, description] = check getImageInsights(image);
+        byte[] imageContents = check (check image.getBodyParts())[0].getByteArray();
+        var [isDog, description] = check getImageInsights(imageContents);
 
         return [
-            image,
+            imageContents,
             {
                 id: uuid:createType1AsString(),
                 imageUrl: "https://" + storeAccountName + ".blob.core.windows.net/images/" + name,
