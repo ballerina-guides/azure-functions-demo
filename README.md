@@ -9,10 +9,10 @@ The sample covers following azure functions triggers and bindings. The goal is t
 - Output Bindings - Blob, HTTP, CosmosDB
 
 
-### Other Branches
+### Other Implementations
 - [main](https://github.com/ballerina-guides/azure-functions-demo) - Ballerina
-- [node-v1](https://github.com/ballerina-guides/azure-functions-demo/tree/node-v1) - Stable NodeJS azure functions implementation
-- [node-v2](https://github.com/ballerina-guides/azure-functions-demo/tree/node-v2) - Experimental NodeJS programming model of azure functions
+- [node-v3](https://github.com/ballerina-guides/azure-functions-demo/tree/node-v3) - Stable NodeJS azure functions implementation
+- [node-v4](https://github.com/ballerina-guides/azure-functions-demo/tree/node-v4) - Experimental NodeJS programming model of azure functions
 
 ### Prerequisites
 
