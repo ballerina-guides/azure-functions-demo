@@ -1,8 +1,0 @@
-[package]
-org = "anjana"
-name = "azf_demo"
-version = "0.1.0"
-
-[build-options]
-observabilityIncluded = true
-cloud = "azure_functions"

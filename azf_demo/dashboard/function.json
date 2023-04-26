@@ -1,0 +1,28 @@
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get"
+      ]
+    },
+    {
+      "name": "entries",
+      "type": "cosmosDB",
+      "databaseName": "reviewdb",
+      "collectionName": "c1",
+      "connectionStringSetting": "CosmosDBConnection",
+      "direction": "in",
+      "sqlQuery": "SELECT * FROM Items"
+  },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ],
+  "scriptFile": "../dist/dashboard/index.js"
+}
